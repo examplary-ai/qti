@@ -3,5 +3,10 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   test: {
     exclude: ["**/node_modules/**", "**/dist/**", "**/examples/**"],
+    coverage: {
+      provider: "v8",
+      include: ["src/**"],
+      reporter: ["text", "lcov"],
+    },
   },
 });
