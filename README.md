@@ -8,14 +8,13 @@ TypeScript utilities for generating and parsing [QTI](https://www.1edtech.org/st
 3.0 and 2.1 assessment packages, including IMS content package manifests and
 QTI test/item XML.
 
-Built and maintained by [Examplary AI](https://examplary.ai) — the
-AI-powered exam platform — and extracted from our production codebase.
+Built and maintained by [Examplary AI](https://examplary.ai), the AI-powered test and practice platform.
 
 ## Features
 
 - Build IMS Content Packages containing QTI tests and items
 - High-level, typed builders for items, tests, sections, interactions and response processing
-- Parse QTI packages and XML strings
+- Parse QTI packages (ZIP files) and XML strings
 - Supports both **QTI 3.0** (default) and **QTI 2.1**, with automatic version detection on parse
 
 ## Installation
