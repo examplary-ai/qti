@@ -43,15 +43,8 @@ XML fixture under `tests/stubs/`.
 
 ## Releasing
 
-Releases are published to npm from GitHub Actions when a `v*` tag is pushed:
-
-```bash
-# Bump version in package.json, then:
-git tag v0.1.0
-git push origin v0.1.0
-```
-
-The `NPM_TOKEN` repository secret must be configured.
+Releases are published to npm from GitHub Actions using `semantic-release`. To publish a release, merge a PR with a commit message that follows the
+conventional commits format (e.g., `feat: add new interaction type`).
 
 ## License
 

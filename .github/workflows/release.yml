@@ -2,18 +2,26 @@ name: Release
 
 on:
   push:
-    tags:
-      - "v*"
+    branches: [main]
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
-  publish:
+  release:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      id-token: write
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write # npm provenance + OIDC publish
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
 
       - name: Enable Corepack
         run: corepack enable
@@ -28,13 +36,19 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
-      - name: Build
-        run: yarn build
+      - name: Typecheck
+        run: yarn typecheck
+
+      - name: Lint
+        run: yarn lint
 
       - name: Test
         run: yarn test
 
-      - name: Publish to npm
-        run: npm publish --provenance --access public
+      - name: Build
+        run: yarn build
+
+      - name: Release
+        run: npx semantic-release
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

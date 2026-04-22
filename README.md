@@ -13,11 +13,10 @@ AI-powered exam platform — and extracted from our production codebase.
 
 ## Features
 
-- 📦 Build IMS Content Packages containing QTI tests and items
-- 🧩 High-level, typed builders for items, tests, sections, interactions and response processing
-- 🔁 Round-trip: generate **and** parse QTI packages and XML strings
-- 🆕 Supports both **QTI 3.0** (default) and **QTI 2.1**, with automatic version detection on parse
-- 🗜️ ZIP output via `jszip`, XML via `xmlbuilder2`, HTML helpers via `cheerio`
+- Build IMS Content Packages containing QTI tests and items
+- High-level, typed builders for items, tests, sections, interactions and response processing
+- Parse QTI packages and XML strings
+- Supports both **QTI 3.0** (default) and **QTI 2.1**, with automatic version detection on parse
 
 ## Installation
 
@@ -25,11 +24,7 @@ AI-powered exam platform — and extracted from our production codebase.
 npm install @examplary/qti
 # or
 yarn add @examplary/qti
-# or
-pnpm add @examplary/qti
 ```
-
-Requires Node.js 20 or newer.
 
 ## Usage
 
@@ -38,7 +33,13 @@ Requires Node.js 20 or newer.
 By default, packages are created in QTI 3.0 format:
 
 ```ts
-import { QtiTest, QtiItem, ImsPackage, TextEntryInteraction, ResponseProcessingTemplate } from "@examplary/qti";
+import {
+  QtiTest,
+  QtiItem,
+  ImsPackage,
+  TextEntryInteraction,
+  ResponseProcessingTemplate,
+} from "@examplary/qti";
 
 // Build a test with one question
 const test = new QtiTest({
