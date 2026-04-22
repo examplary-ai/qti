@@ -1,0 +1,60 @@
+{
+  "name": "@examplary/qti",
+  "description": "Utilities to generate and parse QTI 3.0 and 2.1 assessment packages.",
+  "version": "1.5.0",
+  "license": "MIT",
+  "author": {
+    "name": "Examplary AI",
+    "email": "hi@examplary.ai",
+    "url": "https://examplary.ai"
+  },
+  "homepage": "https://github.com/examplary-ai/qti#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/examplary-ai/qti.git"
+  },
+  "bugs": {
+    "url": "https://github.com/examplary-ai/qti/issues"
+  },
+  "keywords": [
+    "qti",
+    "qti3",
+    "qti-3",
+    "qti2",
+    "qti-2.1",
+    "ims",
+    "ims-manifest",
+    "assessment",
+    "exam",
+    "education",
+    "1edtech"
+  ],
+  "main": "dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "packageManager": "yarn@4.5.3",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "yarn build"
+  },
+  "dependencies": {
+    "cheerio": "^1.1.2",
+    "jszip": "^3.10.1",
+    "xmlbuilder2": "^4.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.0"
+  }
+}

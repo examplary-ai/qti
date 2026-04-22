@@ -1,0 +1,65 @@
+<qti-assessment-item label="test">
+    <qti-item-body>
+        <div class="qti-layout-row">
+            <div class="qti-layout-col6">
+                <h1>
+                    Zevenblad
+                </h1>
+                <p>
+                    Zevenblad is een plant die in Nederland veel voorkomt.
+                </p>
+                <p>
+                    In een bloemengids staat:
+                </p>
+                <ul>
+                    <li>
+                        <strong>
+                            Bloeimaanden:
+                        </strong>
+                        Juni en juli.
+                    </li>
+                    <li>
+                        <strong>
+                            Wortels:
+                        </strong>
+                        Een wortelstok met ondergrondse uitlopers. Vaak groeit de plant in grote groepen.
+                    </li>
+                    <li>
+                        <strong>
+                            Bloemen:
+                        </strong>
+                        De bloemschermen zijn 2 tot 6 cm breed en bestaan uit 10 tot 20 stralen. Het omwindsel ontbreekt meestal. De bloemen zijn wit of soms roze en 2 tot 3 mm groot. De randbloemen zijn stralend.
+                    </li>
+                    <li>
+                        <strong>
+                            Vruchten:
+                        </strong>
+                        De vruchten zijn eivormig en 3 tot 4 mm lang.
+                    </li>
+                </ul>
+                <p>
+                    Na de zomer verspreidt zevenblad zijn zaden. In de maanden februari tot en met april vermeerdert de plant zich ook snel.
+                </p>
+            </div>
+            <div class="qti-layout-col6">
+                <span>
+                    Beantwoord onderstaande vraag
+                </span>
+                <qti-choice-interaction id="choiceInteraction1" max-choices="1" shuffle="false" response-identifier="RESPONSE">
+                    <qti-prompt>
+                        Vermeerdert zevenblad zich nooit in april volgens de informatie?
+                    </qti-prompt>
+                    <qti-simple-choice identifier="A">
+                        alleen <em>geslachtelijk</em>
+                    </qti-simple-choice>
+                    <qti-simple-choice identifier="B">
+                        alleen ongeslachtelijk
+                    </qti-simple-choice>
+                    <qti-simple-choice identifier="C">
+                        geslachtelijk en ongeslachtelijk
+                    </qti-simple-choice>
+                </qti-choice-interaction>
+            </div>
+        </div>
+    </qti-item-body>
+</qti-assessment-item>
