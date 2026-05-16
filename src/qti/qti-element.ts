@@ -36,6 +36,19 @@ export abstract class QtiElement {
     });
   }
 
+  public getNamespacedElements(): NamespacedElement[] {
+    return this.namespaceElements;
+  }
+
+  public getNamespacedElement(
+    namespace: string,
+    elementName: string,
+  ): NamespacedElement | undefined {
+    return this.namespaceElements.find(
+      (e) => e.namespace === namespace && e.elementName === elementName,
+    );
+  }
+
   protected appendNamespacesAndElements(element: XMLBuilder): void {
     for (const [prefix, uri] of Object.entries(this.namespaces)) {
       element.att(`xmlns:${prefix}`, uri);

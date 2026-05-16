@@ -278,6 +278,30 @@ export class QtiItem extends QtiElement {
       }
     }
 
+    // Parse direct children whose tag name has a `prefix:elementName` form
+    // — these are namespaced extension elements (e.g. our own
+    // <examplary:question-metadata>).
+    root.children().each((_, child) => {
+      if (child.type !== "tag") return;
+      const tagName = child.tagName;
+      const colonIdx = tagName.indexOf(":");
+      if (colonIdx <= 0) return;
+      const namespace = tagName.slice(0, colonIdx);
+      const elementName = tagName.slice(colonIdx + 1);
+      const attributes: Record<string, string | undefined> = {};
+      for (const [name, value] of Object.entries(child.attribs)) {
+        // skip namespace-declaration attributes
+        if (name.startsWith("xmlns")) continue;
+        attributes[name] = value;
+      }
+      item.addNamespacedElement(
+        namespace,
+        elementName,
+        $(child).text() || "",
+        attributes,
+      );
+    });
+
     return item;
   }
 
