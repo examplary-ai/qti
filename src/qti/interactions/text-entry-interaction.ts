@@ -51,18 +51,24 @@ export class TextEntryInteraction extends QtiInteraction {
 
   public static fromXmlString(xml: string): TextEntryInteraction {
     const $ = load(xml, { xmlMode: true });
-    const $root = $("qti-text-entry-interaction");
+    let $root = $("qti-text-entry-interaction");
+    let version = QtiVersion.v3p0;
+    if (!$root.length) {
+      $root = $("textEntryInteraction");
+      version = QtiVersion.v2p1;
+    }
+    const attr = (name: string) => $root.attr(toAttributeName(name, version));
 
     return new TextEntryInteraction({
-      responseIdentifier: $root.attr("response-identifier")!,
+      responseIdentifier: attr("response-identifier")!,
       label: $root.attr("label"),
-      stringIdentifier: $root.attr("string-identifier"),
-      expectedLength: $root.attr("expected-length")
-        ? Number($root.attr("expected-length"))
+      stringIdentifier: attr("string-identifier"),
+      expectedLength: attr("expected-length")
+        ? Number(attr("expected-length"))
         : undefined,
-      placeholderText: $root.attr("placeholder-text"),
+      placeholderText: attr("placeholder-text"),
       format: $root.attr("format"),
-      patternMask: $root.attr("pattern-mask"),
+      patternMask: attr("pattern-mask"),
       patternMaskMessage: $root.attr("data-patternmask-message"),
     });
   }

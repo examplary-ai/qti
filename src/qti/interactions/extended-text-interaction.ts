@@ -63,26 +63,28 @@ export class ExtendedTextInteraction extends QtiPromptInteraction {
 
   public static fromXmlString(xml: string): ExtendedTextInteraction {
     const $ = load(xml, { xmlMode: true });
-    const $root = $("qti-extended-text-interaction");
+    let $root = $("qti-extended-text-interaction");
+    let version = QtiVersion.v3p0;
+    if (!$root.length) {
+      $root = $("extendedTextInteraction");
+      version = QtiVersion.v2p1;
+    }
+    const attr = (name: string) => $root.attr(toAttributeName(name, version));
 
     return new ExtendedTextInteraction({
-      responseIdentifier: $root.attr("response-identifier")!,
+      responseIdentifier: attr("response-identifier")!,
       label: $root.attr("label"),
       base: $root.attr("base") ? Number($root.attr("base")) : undefined,
-      stringIdentifier: $root.attr("string-identifier"),
-      expectedLength: $root.attr("expected-length")
-        ? Number($root.attr("expected-length"))
+      stringIdentifier: attr("string-identifier"),
+      expectedLength: attr("expected-length")
+        ? Number(attr("expected-length"))
         : undefined,
-      patternMask: $root.attr("pattern-mask"),
-      placeholderText: $root.attr("placeholder-text"),
-      maxStrings: $root.attr("max-strings")
-        ? Number($root.attr("max-strings"))
-        : undefined,
-      minStrings: $root.attr("min-strings")
-        ? Number($root.attr("min-strings"))
-        : undefined,
-      expectedLines: $root.attr("expected-lines")
-        ? Number($root.attr("expected-lines"))
+      patternMask: attr("pattern-mask"),
+      placeholderText: attr("placeholder-text"),
+      maxStrings: attr("max-strings") ? Number(attr("max-strings")) : undefined,
+      minStrings: attr("min-strings") ? Number(attr("min-strings")) : undefined,
+      expectedLines: attr("expected-lines")
+        ? Number(attr("expected-lines"))
         : undefined,
       format: $root.attr("format") as "plain" | "pre-formatted" | "xhtml",
     });

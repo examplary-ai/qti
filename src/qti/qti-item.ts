@@ -246,7 +246,8 @@ export class QtiItem extends QtiElement {
           ) as QtiInteraction;
 
           if (interaction instanceof QtiPromptInteraction) {
-            const promptHtml = $(interactionNode).find("qti-prompt").html();
+            const promptSelector = isV21 ? "prompt" : "qti-prompt";
+            const promptHtml = $(interactionNode).find(promptSelector).html();
             if (promptHtml) {
               interaction.prompt = promptHtml.trim();
             }
