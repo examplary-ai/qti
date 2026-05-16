@@ -2,7 +2,10 @@ import { load } from "cheerio";
 import { create } from "xmlbuilder2/lib/index.js";
 
 import { qtiInteractionTypes } from "./interactions";
-import { QtiInteraction } from "./interactions/interaction";
+import {
+  QtiInteraction,
+  QtiPromptInteraction,
+} from "./interactions/interaction";
 import { QtiElement } from "./qti-element";
 import { QtiTest } from "./qti-test";
 import {
@@ -52,6 +55,7 @@ export type OutcomeDeclaration = {
   cardinality: QtiCardinality;
   baseType: QtiBaseType;
   defaultValue?: number | string;
+  normalMaximum?: number;
   view?: QtiAudience;
 };
 
@@ -199,11 +203,19 @@ export class QtiItem extends QtiElement {
         }
       }
 
+      const normalMaximumAttr = isV21 ? "normalMaximum" : "normal-maximum";
+      const normalMaximumRaw = $out.attr(normalMaximumAttr);
+      const normalMaximum =
+        normalMaximumRaw !== undefined && normalMaximumRaw !== ""
+          ? Number(normalMaximumRaw)
+          : undefined;
+
       item.addOutcomeDeclaration({
         identifier: outcomeId,
         cardinality,
         baseType,
         defaultValue,
+        normalMaximum,
       });
     });
 
@@ -224,10 +236,19 @@ export class QtiItem extends QtiElement {
         );
 
         for (const interactionNode of interactionNodes) {
+          const outerHtml = $(interactionNode).prop("outerHTML")!;
           const interaction = interactionType.fromXmlString(
-            $(interactionNode).prop("outerHTML")!,
-          );
-          item.addInteraction(interaction as QtiInteraction);
+            outerHtml,
+          ) as QtiInteraction;
+
+          if (interaction instanceof QtiPromptInteraction) {
+            const promptHtml = $(interactionNode).find("qti-prompt").html();
+            if (promptHtml) {
+              interaction.prompt = promptHtml.trim();
+            }
+          }
+
+          item.addInteraction(interaction);
         }
       }
       const bodyHtml = $body.html();
@@ -330,6 +351,7 @@ export class QtiItem extends QtiElement {
         [attr("base-type")]: outcomeDeclaration.baseType,
         cardinality: outcomeDeclaration.cardinality,
         identifier: outcomeDeclaration.identifier,
+        [attr("normal-maximum")]: outcomeDeclaration.normalMaximum?.toString(),
       });
       if (outcomeDeclaration.defaultValue !== undefined) {
         outcome
@@ -385,6 +407,14 @@ export class QtiItem extends QtiElement {
     return this.itemBodyElements
       .filter((element) => "interaction" in element)
       .map((element) => element.interaction);
+  }
+
+  public getResponseDeclarations(): ResponseDeclaration[] {
+    return Array.from(this.responseDeclarations.values());
+  }
+
+  public getOutcomeDeclarations(): OutcomeDeclaration[] {
+    return Array.from(this.outcomeDeclarations.values());
   }
 
   public getItemBodyHtml(): string {
