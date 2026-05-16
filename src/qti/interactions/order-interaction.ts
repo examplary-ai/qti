@@ -7,7 +7,7 @@ import {
   QtiPromptInteraction,
   QtiPromptInteractionOptions,
 } from "./interaction";
-import { appendHtmlFragment } from "../../utils/html";
+import { appendHtmlFragment, extractHtmlFragment } from "../../utils/html";
 import { toElementName, toAttributeName } from "../../utils/version";
 import { QtiVersion } from "../types";
 
@@ -74,7 +74,7 @@ export class OrderInteraction extends QtiPromptInteraction {
           toAttributeName("template-identifier", version),
         ),
         label: choice.attr("label"),
-        content: (choice.html() || "").trim(),
+        content: extractHtmlFragment(choice),
       });
     });
 
