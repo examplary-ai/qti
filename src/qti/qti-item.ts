@@ -156,13 +156,16 @@ export class QtiItem extends QtiElement {
               .get()
           : undefined;
 
-      const cardinality = ($res.attr("cardinality") ||
+      let cardinality = ($res.attr("cardinality") ||
         "single") as QtiCardinality;
       const baseTypeAttr = isV21 ? "baseType" : "base-type";
       const baseType = ($res.attr(baseTypeAttr) || "string") as QtiBaseType;
       if (correctResponse) {
         if (baseType === "float" || baseType === "integer") {
           correctResponse = correctResponse.map((c) => Number(c));
+        }
+        if (correctResponse.length > 1 && cardinality === "single") {
+          cardinality = "multiple";
         }
       }
 
