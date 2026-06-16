@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 
-import { ImsPackage } from "./ims-package";
 import { ImsManifestResourceType } from "./ims-manifest";
+import { ImsPackage } from "./ims-package";
 
 describe("ImsPackage", () => {
   test("can include a resource and retrieve its contents", async () => {
@@ -30,7 +30,7 @@ describe("ImsPackage", () => {
     expect(retrievedContent).toBe(resourceContent);
   });
 
-  test('can include a resource from a URL and retrieve its contents', async () => {
+  test("can include a resource from a URL and retrieve its contents", async () => {
     const imsPackage = new ImsPackage();
     const resourceIdentifier = "res2";
     const resourceFileName = "item2.xml";
@@ -38,12 +38,13 @@ describe("ImsPackage", () => {
     const resourceUrl = "https://example.com/item2.xml";
 
     // Mock fetch to return the resource content
-    globalThis.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
+    globalThis.fetch = async (input: RequestInfo | URL) => {
       const url = typeof input === "string" ? input : input.toString();
       if (url === resourceUrl) {
         return {
           ok: true,
-          arrayBuffer: async () => new Uint8Array([...resourceContent].map(c => c.charCodeAt(0))),
+          arrayBuffer: async () =>
+            new Uint8Array([...resourceContent].map((c) => c.charCodeAt(0))),
         } as unknown as Response;
       }
       throw new Error("URL not mocked");
