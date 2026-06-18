@@ -2,8 +2,9 @@ import { readFile } from "node:fs/promises";
 
 import { describe, expect, test } from "vitest";
 
-import { ChoiceInteraction } from "./interactions";
+import { ChoiceInteraction, TextEntryInteraction } from "./interactions";
 import { QtiItem, ResponseProcessingTemplate } from "./qti-item";
+import { QtiVersion } from "./types";
 
 describe("QtiItem", () => {
   test("it creates a QTI item", () => {
@@ -29,6 +30,64 @@ describe("QtiItem", () => {
 
     expect(xml).toContain("qti-item-body");
     expect(xml).toContain("Question text here");
+  });
+
+  test("it always emits the required time-dependent attribute", () => {
+    const item = new QtiItem({ identifier: "test-item" });
+    item.addItemBodyFromHtml("<p>Body</p>");
+
+    expect(item.buildXml()).toContain('time-dependent="false"');
+  });
+
+  test("it wraps inline interactions in a block element", () => {
+    const item = new QtiItem({ identifier: "test-item" });
+    item.addItemBodyFromHtml("<p>What is 2 + 2?</p>");
+    item.addInteraction(
+      new TextEntryInteraction({ responseIdentifier: "RESPONSE" }),
+    );
+
+    const xml = item.buildXml();
+
+    // Inline interaction must be nested in a <p>, not a direct child of the body.
+    expect(xml).toMatch(/<p>\s*<qti-text-entry-interaction[^>]*\/>\s*<\/p>/);
+  });
+
+  test("it emits qti-prompt before the choices", () => {
+    const item = new QtiItem({ identifier: "test-item" });
+    item.addInteraction(
+      new ChoiceInteraction({
+        responseIdentifier: "RESPONSE",
+        prompt: "Pick one",
+        choices: [
+          { identifier: "A", content: "Apple" },
+          { identifier: "B", content: "Banana" },
+        ],
+      }),
+    );
+
+    const xml = item.buildXml();
+
+    expect(xml.indexOf("qti-prompt")).toBeLessThan(xml.indexOf("qti-simple-choice"));
+  });
+
+  test("nested inline interactions survive a build -> parse roundtrip", () => {
+    for (const version of [QtiVersion.v3p0, QtiVersion.v2p1]) {
+      const item = new QtiItem({ identifier: "test-item" });
+      item.addItemBodyFromHtml("<p>2 + 2?</p>");
+      item.addInteraction(
+        new TextEntryInteraction({
+          responseIdentifier: "RESPONSE",
+          expectedLength: 3,
+        }),
+      );
+
+      const parsed = QtiItem.fromXmlString(item.buildXml({ version }));
+      const interactions = parsed.getInteractions();
+
+      expect(interactions).toHaveLength(1);
+      expect(interactions[0]).toBeInstanceOf(TextEntryInteraction);
+      expect(interactions[0].responseIdentifier).toBe("RESPONSE");
+    }
   });
 });
 

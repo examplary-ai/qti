@@ -346,7 +346,8 @@ export class QtiItem extends QtiElement {
         "xsi:schemaLocation": config.schemaLocation,
         identifier: this.identifier,
         adaptive: this.adaptive?.toString(),
-        [attr("time-dependent")]: this.timeDependent?.toString(),
+        // time-dependent is a required attribute on the assessment item.
+        [attr("time-dependent")]: (this.timeDependent ?? false).toString(),
         label: this.label,
         title: this.title,
         toolName: this.toolName || "Examplary QTI Module",
@@ -397,7 +398,15 @@ export class QtiItem extends QtiElement {
         appendHtmlFragment(element.html, itemBody);
       }
       if ("interaction" in element) {
-        itemBody.import(element.interaction.getXmlBuilder(version));
+        const builder = element.interaction.getXmlBuilder(version);
+        const interactionClass = element.interaction
+          .constructor as typeof QtiInteraction;
+        if (interactionClass.inline) {
+          // Inline interactions must live inside block-level content.
+          itemBody.ele("p").import(builder);
+        } else {
+          itemBody.import(builder);
+        }
       }
     }
 

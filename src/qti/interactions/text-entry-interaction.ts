@@ -30,6 +30,7 @@ export type TextEntryInteractionOptions = QtiInteractionOptions & {
  */
 export class TextEntryInteraction extends QtiInteraction {
   public static tagName = "qti-text-entry-interaction";
+  public static inline = true;
 
   public stringIdentifier?: string;
   public expectedLength?: number;

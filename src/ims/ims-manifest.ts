@@ -246,8 +246,8 @@ export class ImsManifest {
 
     // Define metadata
     const metadata = manifest.ele("metadata");
-    metadata.ele("schema").txt("QTI Package");
-    metadata.ele("schemaversion").txt(config.schemaVersion);
+    metadata.ele("schema").txt(config.manifestSchema);
+    metadata.ele("schemaversion").txt(config.manifestSchemaVersion);
 
     const lom = "http://ltsc.ieee.org/xsd/LOM";
     const lomMetadata = metadata.ele(lom, "lom", { xmlns: lom });
