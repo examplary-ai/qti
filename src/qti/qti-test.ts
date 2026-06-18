@@ -170,7 +170,8 @@ export class QtiTest extends QtiElement {
         title: this.title,
         toolName: this.toolName,
         toolVersion: this.toolVersion,
-        "xml:lang": this.language,
+        // The QTI 2.1 assessmentTest element does not permit xml:lang.
+        "xml:lang": version === QtiVersion.v2p1 ? undefined : this.language,
       },
     );
 

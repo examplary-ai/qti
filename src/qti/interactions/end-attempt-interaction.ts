@@ -26,6 +26,7 @@ export type EndAttemptInteractionOptions = QtiInteractionOptions & {
  */
 export class EndAttemptInteraction extends QtiInteraction {
   public static tagName = "qti-end-attempt-interaction";
+  public static inline = true;
 
   public title: string;
   public countAttempt?: boolean;

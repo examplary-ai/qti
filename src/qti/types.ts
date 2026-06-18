@@ -15,6 +15,10 @@ export type QtiVersionConfig = {
   manifestSchemaLocation: string;
   metadataNamespace: string;
   schemaVersion: string;
+  /** Value for the manifest's <schema> metadata element. */
+  manifestSchema: string;
+  /** Value for the manifest's <schemaversion> metadata element. */
+  manifestSchemaVersion: string;
 };
 
 export const QTI_VERSION_CONFIG: Record<QtiVersion, QtiVersionConfig> = {
@@ -38,6 +42,8 @@ export const QTI_VERSION_CONFIG: Record<QtiVersion, QtiVersionConfig> = {
       "http://www.imsglobal.org/xsd/imsqti_metadata_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_metadatav3p0_v1p0.xsd",
     metadataNamespace: "http://www.imsglobal.org/xsd/imsqti_metadata_v3p0",
     schemaVersion: "3.0.0",
+    manifestSchema: "QTI Package",
+    manifestSchemaVersion: "3.0.0",
   },
   [QtiVersion.v2p1]: {
     namespace: "http://www.imsglobal.org/xsd/imsqti_v2p1",
@@ -56,6 +62,9 @@ export const QTI_VERSION_CONFIG: Record<QtiVersion, QtiVersionConfig> = {
       "http://www.imsglobal.org/xsd/imscp_v1p1 http://www.imsglobal.org/xsd/qti/qtiv2p1/qtiv2p1_imscpv1p2_v1p0.xsd",
     metadataNamespace: "http://www.imsglobal.org/xsd/imsqti_v2p1",
     schemaVersion: "2.1.0",
+    // The v2.1 IMS Content Package schema restricts these to a fixed set.
+    manifestSchema: "QTIv2.1 Package",
+    manifestSchemaVersion: "1.0.0",
   },
 };
 

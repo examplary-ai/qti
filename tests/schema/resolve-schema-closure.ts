@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -119,7 +119,9 @@ async function crawl(rootUrl: string): Promise<SchemaClosure> {
 async function fetchText(url: string): Promise<string> {
   const response = await fetch(url, { redirect: "follow" });
   if (!response.ok) {
-    throw new Error(`Failed to download schema ${url}: HTTP ${response.status}`);
+    throw new Error(
+      `Failed to download schema ${url}: HTTP ${response.status}`,
+    );
   }
   return decodeSchema(new Uint8Array(await response.arrayBuffer()));
 }
@@ -136,17 +138,12 @@ function decodeSchema(bytes: Uint8Array): string {
 
   // TextDecoder strips a leading BOM for us.
   const text = new TextDecoder(encoding).decode(bytes);
-  return text.replace(
-    /(<\?xml[^>]*encoding\s*=\s*")[^"]*(")/i,
-    `$1UTF-8$2`,
-  );
+  return text.replace(/(<\?xml[^>]*encoding\s*=\s*")[^"]*(")/i, `$1UTF-8$2`);
 }
 
 type CacheIndex = { rootFileName: string; fileNames: string[] };
 
-async function loadFromCache(
-  indexPath: string,
-): Promise<SchemaClosure | null> {
+async function loadFromCache(indexPath: string): Promise<SchemaClosure | null> {
   try {
     const index: CacheIndex = JSON.parse(await readFile(indexPath, "utf-8"));
     const files = await Promise.all(

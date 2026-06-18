@@ -37,6 +37,7 @@ export type InlineChoiceInteractionOptions = QtiInteractionOptions & {
  */
 export class InlineChoiceInteraction extends QtiInteraction {
   public static tagName = "qti-inline-choice-interaction";
+  public static inline = true;
 
   public shuffle?: boolean;
   public required?: boolean;
