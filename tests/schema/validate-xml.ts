@@ -1,7 +1,7 @@
 import { memoryPages, validateXML } from "xmllint-wasm";
 
-import { QtiVersion } from "../../src";
 import { resolveSchemaClosure } from "./resolve-schema-closure";
+import { QtiVersion } from "../../src";
 
 /** Which 1EdTech schema a document should be validated against. */
 export type QtiSchemaKind = "asi" | "manifest";

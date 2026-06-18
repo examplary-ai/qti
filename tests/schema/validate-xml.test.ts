@@ -1,5 +1,6 @@
 import { describe, expect, test } from "vitest";
 
+import { validateQtiXml } from "./validate-xml";
 import {
   ChoiceInteraction,
   ExtendedTextInteraction,
@@ -13,7 +14,6 @@ import {
   ResponseProcessingTemplate,
   TextEntryInteraction,
 } from "../../src";
-import { validateQtiXml } from "./validate-xml";
 
 /**
  * Schema validation tests: do the documents the builders generate actually
