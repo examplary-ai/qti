@@ -240,7 +240,17 @@ export class QtiItem extends QtiElement {
         );
 
         for (const interactionNode of interactionNodes) {
-          const outerHtml = $(interactionNode).prop("outerHTML")!;
+          // A position-object interaction is wrapped in a stage that carries
+          // its background image; parse from the stage so that is preserved.
+          const parent = interactionNode.parent;
+          const stageNode =
+            parent &&
+            "tagName" in parent &&
+            (parent.tagName === "qti-position-object-stage" ||
+              parent.tagName === "positionObjectStage")
+              ? parent
+              : interactionNode;
+          const outerHtml = $(stageNode).prop("outerHTML")!;
           const interaction = interactionType.fromXmlString(
             outerHtml,
           ) as QtiInteraction;

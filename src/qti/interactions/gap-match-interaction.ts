@@ -104,12 +104,20 @@ export class GapMatchInteraction extends QtiPromptInteraction {
     const el = (name: string) => toElementName(name, version);
     const attr = (name: string) => toAttributeName(name, version);
 
+    // QTI 2.1's gapMatchInteraction does not permit min/max-associations.
+    const associations =
+      version === QtiVersion.v2p1
+        ? {}
+        : {
+            [attr("min-associations")]: this.minAssociations?.toString(),
+            [attr("max-associations")]: this.maxAssociations?.toString(),
+          };
+
     const item = fragment().ele(el("qti-gap-match-interaction"), {
       [attr("response-identifier")]: this.responseIdentifier,
       label: this.label,
       shuffle: this.shuffle ? "true" : "false",
-      [attr("min-associations")]: this.minAssociations?.toString(),
-      [attr("max-associations")]: this.maxAssociations?.toString(),
+      ...associations,
     });
 
     for (const gapText of this.gapTexts || []) {

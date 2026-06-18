@@ -147,11 +147,19 @@ export class GraphicGapMatchInteraction extends QtiPromptInteraction {
     const el = (name: string) => toElementName(name, version);
     const attr = (name: string) => toAttributeName(name, version);
 
+    // QTI 2.1's graphicGapMatchInteraction does not permit min/max-associations.
+    const associations =
+      version === QtiVersion.v2p1
+        ? {}
+        : {
+            [attr("min-associations")]: this.minAssociations?.toString(),
+            [attr("max-associations")]: this.maxAssociations?.toString(),
+          };
+
     const item = fragment().ele(el("qti-graphic-gap-match-interaction"), {
       [attr("response-identifier")]: this.responseIdentifier,
       label: this.label,
-      [attr("min-associations")]: this.minAssociations?.toString(),
-      [attr("max-associations")]: this.maxAssociations?.toString(),
+      ...associations,
     });
 
     item.ele("object", {
