@@ -67,7 +67,9 @@ describe("QtiItem", () => {
 
     const xml = item.buildXml();
 
-    expect(xml.indexOf("qti-prompt")).toBeLessThan(xml.indexOf("qti-simple-choice"));
+    expect(xml.indexOf("qti-prompt")).toBeLessThan(
+      xml.indexOf("qti-simple-choice"),
+    );
   });
 
   test("nested inline interactions survive a build -> parse roundtrip", () => {
