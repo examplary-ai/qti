@@ -173,6 +173,7 @@ __metadata:
     typescript-eslint: "npm:^8.59.0"
     vitest: "npm:^4.1.5"
     xmlbuilder2: "npm:^4.0.3"
+    xmllint-wasm: "npm:^5.2.0"
   languageName: unknown
   linkType: soft
 
@@ -4047,6 +4048,15 @@ __metadata:
     "@oozcitak/util": "npm:^10.0.0"
     js-yaml: "npm:^4.1.1"
   checksum: 10c0/ba257ca8a29b35d916fda190659b95d861137922fc792f760223f4a3bad07b5f18c992fb3a669d3dd6de6607eff64440cda86de083fc4648e4ec6b8f6be636a0
+  languageName: node
+  linkType: hard
+
+"xmllint-wasm@npm:^5.2.0":
+  version: 5.2.0
+  resolution: "xmllint-wasm@npm:5.2.0"
+  peerDependencies:
+    "@types/node": ">=16"
+  checksum: 10c0/a76f5a469ff04de1155fd8740fa0f8e774667678076a226df73fa7e6ccdd16656c05c1857247d00ce7c741e251c835cd1f517e57fea5766365fb299bccb398da
   languageName: node
   linkType: hard
 

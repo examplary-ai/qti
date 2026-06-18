@@ -20,3 +20,6 @@ yarn-error.log*
 .idea
 .vscode
 *.swp
+
+# QTI schema validation cache (downloaded on first test run)
+tests/schema/.cache
