@@ -93,7 +93,8 @@ export class MediaInteraction extends QtiPromptInteraction {
     const item = fragment().ele(el("qti-media-interaction"), {
       [attr("response-identifier")]: this.responseIdentifier,
       label: this.label,
-      autostart: this.autostart ? "true" : undefined,
+      // autostart is a required attribute on the media interaction.
+      autostart: this.autostart ? "true" : "false",
       [attr("min-plays")]: this.minPlays?.toString(),
       [attr("max-plays")]: this.maxPlays?.toString(),
       loop: this.loop ? "true" : undefined,

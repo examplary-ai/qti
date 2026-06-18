@@ -66,9 +66,12 @@ export class PositionObjectInteraction extends QtiPromptInteraction {
   public static fromXmlString(xml: string): PositionObjectInteraction {
     const $ = load(xml, { xmlMode: true });
     const $root = $("qti-position-object-interaction");
+    // The interaction is wrapped in a stage that carries the background image
+    // as its own direct <object>; the interaction's <object> is the one being
+    // positioned.
     const $object = $root.find("> object");
-    const $stage = $root.find("qti-position-object-stage");
-    const $stageObject = $stage.find("object");
+    const $stage = $("qti-position-object-stage");
+    const $stageObject = $stage.children("object").first();
 
     let positionObjectStage: PositionObjectStageOptions | undefined;
     if ($stageObject.length) {
@@ -108,11 +111,17 @@ export class PositionObjectInteraction extends QtiPromptInteraction {
     });
   }
 
+  public getXmlBuilder(version: QtiVersion = QtiVersion.v3p0): XMLBuilder {
+    // Unlike other interactions, qti-position-object-interaction does not allow
+    // a qti-prompt, so we skip the prompt handling from QtiPromptInteraction.
+    return this.buildXmlPayload(version);
+  }
+
   protected buildXmlPayload(version: QtiVersion): XMLBuilder {
     const el = (name: string) => toElementName(name, version);
     const attr = (name: string) => toAttributeName(name, version);
 
-    const item = fragment().ele(el("qti-position-object-interaction"), {
+    const interaction = fragment().ele(el("qti-position-object-interaction"), {
       [attr("response-identifier")]: this.responseIdentifier,
       label: this.label,
       [attr("center-point")]: this.centerPoint,
@@ -120,23 +129,28 @@ export class PositionObjectInteraction extends QtiPromptInteraction {
       [attr("max-choices")]: this.maxChoices?.toString(),
     });
 
-    item.ele("object", {
+    interaction.ele("object", {
       data: this.object.data,
       type: this.object.type,
       width: this.object.width?.toString(),
       height: this.object.height?.toString(),
     });
 
-    if (this.positionObjectStage) {
-      const stage = item.ele(el("qti-position-object-stage"));
-      stage.ele("object", {
-        data: this.positionObjectStage.data,
-        type: this.positionObjectStage.type,
-        width: this.positionObjectStage.width?.toString(),
-        height: this.positionObjectStage.height?.toString(),
-      });
+    // The interaction must be wrapped in a stage whose background image comes
+    // first, followed by the interaction(s).
+    if (!this.positionObjectStage) {
+      return interaction;
     }
 
-    return item;
+    const stage = fragment().ele(el("qti-position-object-stage"));
+    stage.ele("object", {
+      data: this.positionObjectStage.data,
+      type: this.positionObjectStage.type,
+      width: this.positionObjectStage.width?.toString(),
+      height: this.positionObjectStage.height?.toString(),
+    });
+    stage.import(interaction);
+
+    return stage;
   }
 }

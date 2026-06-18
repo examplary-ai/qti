@@ -11,7 +11,10 @@ export const appendHtmlFragment = (html: string, toElement: XMLBuilder) => {
     `<div>${html}</div>`,
   );
 
-  doc.each((child) => {
+  // Import the wrapper's children directly rather than the wrapping <div>
+  // itself, so the fragment can be placed in inline contexts (e.g. qti-gap-text,
+  // qti-inline-choice) where a <div> is not permitted.
+  doc.first().each((child) => {
     toElement.import(child);
   });
 };
